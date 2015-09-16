@@ -2,8 +2,6 @@ package com.tuvvut.udacity.spotify.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +13,7 @@ import android.widget.ListView;
 import com.tuvvut.udacity.spotify.R;
 import com.tuvvut.udacity.spotify.adapter.MyAdapter;
 import com.tuvvut.udacity.spotify.presenter.Presenter;
+import com.tuvvut.udacity.spotify.util.Util;
 import com.tuvvut.udacity.spotify.view.ViewHolder;
 
 import java.util.List;
@@ -24,7 +23,8 @@ import java.util.List;
  */
 public abstract class MyListFragment<T> extends Fragment implements AdapterView.OnItemClickListener {
     protected Presenter presenter;
-    private ListView listView;
+    protected ListView listView;
+    private List<T> data;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,10 +43,17 @@ public abstract class MyListFragment<T> extends Fragment implements AdapterView.
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        presenter.onListItemClick(parent.getAdapter().getItem(position), position);
+        if (presenter instanceof AdapterView.OnItemClickListener) {
+            ((AdapterView.OnItemClickListener) presenter).onItemClick(parent, view, position, id);
+        }
+    }
+
+    public List<T> getAdapterData() {
+        return data;
     }
 
     public void setAdapterData(List<T> objects) {
+        data = objects;
         MyAdapter adapter;
         if (getAdapter() == null) {
             adapter = new MyAdapter(getActivity(), objects) {
@@ -71,32 +78,11 @@ public abstract class MyListFragment<T> extends Fragment implements AdapterView.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.home:
-                getActivity().onBackPressed();
+            case android.R.id.home:
+                Util.popBackStack(getFragmentManager());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
-        }
-    }
-
-    public void setTitle(String title){
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle(title);
-        }
-    }
-
-    public void setSubtitle(String subtitle){
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setSubtitle(subtitle);
-        }
-    }
-
-    public void setDisplayHomeAsUpEnabled(boolean enable){
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(enable);
         }
     }
 
@@ -113,5 +99,7 @@ public abstract class MyListFragment<T> extends Fragment implements AdapterView.
     public abstract ViewHolder getListItemViewHolder(View v);
 
     public abstract Presenter getPresenter();
+
+    protected abstract void setActionBar();
 
 }

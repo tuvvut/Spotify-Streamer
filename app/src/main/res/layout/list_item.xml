@@ -21,7 +21,5 @@
         android:layout_marginLeft="@dimen/list_item_textView_marginLeft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:layout_alignBottom="@+id/image"
-        android:layout_alignTop="@+id/image"/>
+        android:layout_centerVertical="true"/>
 </RelativeLayout>

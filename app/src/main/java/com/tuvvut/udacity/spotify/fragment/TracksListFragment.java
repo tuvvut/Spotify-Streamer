@@ -1,8 +1,9 @@
 package com.tuvvut.udacity.spotify.fragment;
 
-import android.view.MenuItem;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.tuvvut.udacity.spotify.Application;
 import com.tuvvut.udacity.spotify.R;
 import com.tuvvut.udacity.spotify.presenter.Presenter;
 import com.tuvvut.udacity.spotify.presenter.TracksPresenter;
@@ -12,21 +13,10 @@ import com.tuvvut.udacity.spotify.view.ViewHolder;
 
 public class TracksListFragment extends MyListFragment {
     public static final String TAG = "TracksFragment";
+    TracksPresenter presenter;
 
     @Override
     public void onCreateView(View view) {
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                Util.popBackStack(getFragmentManager());
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     @Override
@@ -46,6 +36,20 @@ public class TracksListFragment extends MyListFragment {
 
     @Override
     public Presenter getPresenter() {
-        return new TracksPresenter(this);
+        presenter = new TracksPresenter(this);
+        setActionBar();
+        return presenter;
+    }
+
+    protected void setActionBar() {
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        Util.setSubtitle(activity, presenter.getSubtitle());
+        if (Application.isOnePane) {
+            Util.setTitle(activity, getString(R.string.tracks_list_title));
+            setHasOptionsMenu(true);
+            Util.setDisplayHomeAsUpEnabled(activity, true);
+        }else{
+            Util.setTitle(activity, getString(R.string.streamer_title));
+        }
     }
 }

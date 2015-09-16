@@ -5,4 +5,9 @@
     <string name="noResult">no result.</string>
     <string name="artists_list_title">Spotify Streamer</string>
     <string name="tracks_list_title">Top 10 Tracks</string>
+    <string name="streamer_title">Spotify Streamer</string>
+    <string name="error_play_song">Something wrong.</string>
+    <string name="error_first_song">It is the first song now.</string>
+    <string name="error_last_song">It is the last song now.</string>
+    <string name="preparing">This song is buffering.</string>
 </resources>

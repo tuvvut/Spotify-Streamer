@@ -13,7 +13,7 @@ import kaaes.spotify.webapi.android.models.Track;
 /**
  * Created by wu on 2015/06/14
  */
-public class TrackView implements ViewHolder<Track> {
+public class TrackView implements ViewHolder<Track>{
     public static final int LAYOUT = R.layout.list_item;
     private ImageView image;
     private TextView text;

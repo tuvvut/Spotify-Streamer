@@ -15,7 +15,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Cache.clear();
         setContentView(R.layout.activity_main);
-        Util.replace(getSupportFragmentManager(), R.id.container, new ArtistsListFragment(), ArtistsListFragment.TAG, false);
+        Application.isOnePane = findViewById(R.id.artistsListFragment) == null;
+        if (Application.isOnePane) {
+            if (savedInstanceState == null){
+                Util.replace(getSupportFragmentManager(), R.id.container, new ArtistsListFragment(), ArtistsListFragment.TAG, false);
+            }
+        }
     }
 
     @Override
