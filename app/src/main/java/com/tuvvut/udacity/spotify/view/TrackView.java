@@ -27,8 +27,7 @@ public class TrackView implements ViewHolder<Track>{
     public void bind(Context context, Track track) {
         text.setText(track.name + "\n" + track.album.name);
         if (track.album.images.size() > 0) {
-            int index = 0;
-            Picasso.with(context).load(track.album.images.get(index).url).into(image);
+            Picasso.with(context).load(track.album.images.get(0).url).into(image);
         } else {
             Picasso.with(context).load(R.mipmap.no_image).into(image);
         }

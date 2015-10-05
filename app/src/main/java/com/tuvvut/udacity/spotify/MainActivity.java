@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Application.isOnePane = findViewById(R.id.artistsListFragment) == null;
         if (Application.isOnePane) {
-            if (savedInstanceState == null){
+            if (savedInstanceState == null) {
                 Util.replace(getSupportFragmentManager(), R.id.container, new ArtistsListFragment(), ArtistsListFragment.TAG, false);
             }
         }

@@ -16,6 +16,10 @@ public class Cache {
         return data.get(key);
     }
 
+    public static boolean containsKey(TYPE key){
+        return data.containsKey(key);
+    }
+
     public static void clear(){
         data.clear();
     }

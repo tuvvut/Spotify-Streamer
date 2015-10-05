@@ -38,15 +38,14 @@ public class TracksPresenter extends Presenter implements AdapterView.OnItemClic
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        showDialog(position);
+        showStreamerUI(position);
     }
 
-
-    public void showDialog(int index) {
+    public void showStreamerUI(int index) {
         FragmentManager fragmentManager = fragment.getFragmentManager();
         StreamerFragment streamer = new StreamerFragment();
         streamer.setTracks(fragment.getAdapterData(), index);
-        if (mIsLargeLayout) {
+        if (!mIsLargeLayout) {
             streamer.show(fragmentManager, StreamerFragment.TAG);
         } else {
             Util.replace(fragmentManager, R.id.container, streamer, StreamerFragment.TAG, Application.isOnePane);

@@ -5,6 +5,7 @@ package com.tuvvut.udacity.spotify;
  */
 public class Application extends android.app.Application {
     public static boolean isOnePane = false;
+//    public static MusicController musicController;
     @Override
     public void onCreate() {
         super.onCreate();

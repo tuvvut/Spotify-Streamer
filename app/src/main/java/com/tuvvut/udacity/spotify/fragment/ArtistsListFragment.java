@@ -1,6 +1,9 @@
 package com.tuvvut.udacity.spotify.fragment;
 
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.SearchView;
@@ -15,12 +18,15 @@ import com.tuvvut.udacity.spotify.view.ViewHolder;
 public class ArtistsListFragment extends MyListFragment implements SearchView.OnQueryTextListener, View.OnTouchListener {
     public static final String TAG = "ArtistFragment";
     private SearchView searchView;
+
     @Override
     public void onCreateView(View view) {
         searchView = (SearchView) view.findViewById(R.id.searchView);
         searchView.setSubmitButtonEnabled(true);
         searchView.setOnQueryTextListener(this);
         listView.setOnTouchListener(this);
+        getActivity().invalidateOptionsMenu();
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -57,7 +63,19 @@ public class ArtistsListFragment extends MyListFragment implements SearchView.On
         Util.setSubtitle(activity, "");
     }
 
-    public void clearFocus(){
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.add(R.string.now_playing).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        ((ArtistsPresenter) presenter).toNowPlaying();
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void clearFocus() {
         searchView.clearFocus();
     }
 

@@ -10,4 +10,7 @@
     <string name="error_first_song">It is the first song now.</string>
     <string name="error_last_song">It is the last song now.</string>
     <string name="preparing">This song is buffering.</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="is_not_playing">Please play a song first.</string>
+    <string name="action_share">Share</string>
 </resources>

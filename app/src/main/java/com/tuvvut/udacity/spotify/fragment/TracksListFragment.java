@@ -1,5 +1,6 @@
 package com.tuvvut.udacity.spotify.fragment;
 
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
@@ -13,10 +14,16 @@ import com.tuvvut.udacity.spotify.view.ViewHolder;
 
 public class TracksListFragment extends MyListFragment {
     public static final String TAG = "TracksFragment";
-    TracksPresenter presenter;
+    private TracksPresenter presenter;
 
     @Override
     public void onCreateView(View view) {
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setActionBar();
     }
 
     @Override
@@ -37,7 +44,6 @@ public class TracksListFragment extends MyListFragment {
     @Override
     public Presenter getPresenter() {
         presenter = new TracksPresenter(this);
-        setActionBar();
         return presenter;
     }
 

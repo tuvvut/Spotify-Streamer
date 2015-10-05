@@ -1,13 +1,16 @@
 package com.tuvvut.udacity.spotify.presenter;
 
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.tuvvut.udacity.spotify.Application;
 import com.tuvvut.udacity.spotify.Cache;
+import com.tuvvut.udacity.spotify.MusicController;
 import com.tuvvut.udacity.spotify.R;
 import com.tuvvut.udacity.spotify.fragment.ArtistsListFragment;
+import com.tuvvut.udacity.spotify.fragment.StreamerFragment;
 import com.tuvvut.udacity.spotify.fragment.TracksListFragment;
 import com.tuvvut.udacity.spotify.util.MyAsyncTask;
 import com.tuvvut.udacity.spotify.util.Util;
@@ -29,6 +32,7 @@ public class ArtistsPresenter extends Presenter implements AdapterView.OnItemCli
     private SpotifyService spotify;
     private MyAsyncTask searchArtists;
     private MyAsyncTask getArtistTopTrack;
+    private MusicController musicController = MusicController.getInstance();
 
     public ArtistsPresenter(final ArtistsListFragment fragment) {
         super(fragment);
@@ -85,6 +89,21 @@ public class ArtistsPresenter extends Presenter implements AdapterView.OnItemCli
         Object data = Cache.get(Cache.TYPE.ARTISTS);
         if (data != null) {
             fragment.setAdapterData((List) data);
+        }
+    }
+
+    public void toNowPlaying(){
+        if (musicController.getTrackForNow() != null){
+            FragmentManager fragmentManager = fragment.getFragmentManager();
+            StreamerFragment streamer = new StreamerFragment();
+            boolean mIsLargeLayout = getResources().getBoolean(R.bool.large_layout);
+            if (!mIsLargeLayout) {
+                streamer.show(fragmentManager, StreamerFragment.TAG);
+            } else {
+                Util.replace(fragmentManager, R.id.container, streamer, StreamerFragment.TAG, Application.isOnePane);
+            }
+        }else{
+            showToast(R.string.is_not_playing,Toast.LENGTH_SHORT);
         }
     }
 
