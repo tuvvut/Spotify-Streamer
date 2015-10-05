@@ -102,7 +102,7 @@ public class MusicService extends Service implements MusicController.MusicContro
     }
 
     private void showNotification(Track track) {
-        if (showNotification) {
+        if (showNotification && track != null) {
             UpdateRemoteControlClient(track);
             updateRemoteView(notification.contentView, notification, track);
             updateRemoteView(notification.bigContentView, notification, track);
