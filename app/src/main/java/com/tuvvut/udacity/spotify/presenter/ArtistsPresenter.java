@@ -65,7 +65,7 @@ public class ArtistsPresenter extends Presenter implements AdapterView.OnItemCli
             @Override
             public Tracks doInBackground(String query) {
                 Map<String, Object> values = new HashMap<>();
-                values.put("country", "SE");
+                values.put("country", Application.countryCode);
                 return spotify.getArtistTopTrack(query, values);
             }
 
@@ -92,18 +92,17 @@ public class ArtistsPresenter extends Presenter implements AdapterView.OnItemCli
         }
     }
 
-    public void toNowPlaying(){
-        if (musicController.getTrackForNow() != null){
+    public void toNowPlaying() {
+        if (musicController.getTrackForNow() != null) {
             FragmentManager fragmentManager = fragment.getFragmentManager();
             StreamerFragment streamer = new StreamerFragment();
-            boolean mIsLargeLayout = getResources().getBoolean(R.bool.large_layout);
-            if (!mIsLargeLayout) {
+            if (Application.isLargeLayout) {
                 streamer.show(fragmentManager, StreamerFragment.TAG);
             } else {
                 Util.replace(fragmentManager, R.id.container, streamer, StreamerFragment.TAG, Application.isOnePane);
             }
-        }else{
-            showToast(R.string.is_not_playing,Toast.LENGTH_SHORT);
+        } else {
+            showToast(R.string.is_not_playing, Toast.LENGTH_SHORT);
         }
     }
 

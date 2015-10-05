@@ -13,4 +13,6 @@
     <string name="now_playing">Now Playing</string>
     <string name="is_not_playing">Please play a song first.</string>
     <string name="action_share">Share</string>
+    <string name="country_code">Select a country code</string>
+    <string name="toggle_notification">toggle notification</string>
 </resources>

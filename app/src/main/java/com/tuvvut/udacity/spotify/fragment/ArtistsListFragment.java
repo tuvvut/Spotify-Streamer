@@ -1,5 +1,8 @@
 package com.tuvvut.udacity.spotify.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -8,6 +11,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.SearchView;
 
+import com.tuvvut.udacity.spotify.Application;
+import com.tuvvut.udacity.spotify.MusicService;
 import com.tuvvut.udacity.spotify.R;
 import com.tuvvut.udacity.spotify.presenter.ArtistsPresenter;
 import com.tuvvut.udacity.spotify.presenter.Presenter;
@@ -18,6 +23,7 @@ import com.tuvvut.udacity.spotify.view.ViewHolder;
 public class ArtistsListFragment extends MyListFragment implements SearchView.OnQueryTextListener, View.OnTouchListener {
     public static final String TAG = "ArtistFragment";
     private SearchView searchView;
+    private ArtistsPresenter presenter;
 
     @Override
     public void onCreateView(View view) {
@@ -52,7 +58,8 @@ public class ArtistsListFragment extends MyListFragment implements SearchView.On
 
     @Override
     public Presenter getPresenter() {
-        return new ArtistsPresenter(this);
+        presenter = new ArtistsPresenter(this);
+        return presenter;
     }
 
     @Override
@@ -66,12 +73,23 @@ public class ArtistsListFragment extends MyListFragment implements SearchView.On
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.add(R.string.now_playing).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        inflater.inflate(R.menu.artistslist_fragment, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        ((ArtistsPresenter) presenter).toNowPlaying();
+        switch (item.getItemId()) {
+            case R.id.now_playing:
+                presenter.toNowPlaying();
+                break;
+            case R.id.country_code:
+                showCountryCodeList();
+                break;
+            case R.id.toggle_notification:
+                getActivity().startService(new Intent(MusicService.TOGGLE_NOTIFICATION, null, getActivity(), MusicService.class));
+                break;
+        }
+        Util.hideSoftKeyboard(getActivity());
         return super.onOptionsItemSelected(item);
     }
 
@@ -81,7 +99,7 @@ public class ArtistsListFragment extends MyListFragment implements SearchView.On
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        return ((ArtistsPresenter) presenter).onQueryTextSubmit(query);
+        return presenter.onQueryTextSubmit(query);
     }
 
     @Override
@@ -93,5 +111,20 @@ public class ArtistsListFragment extends MyListFragment implements SearchView.On
     public boolean onTouch(View v, MotionEvent event) {
         Util.hideSoftKeyboard(getActivity());
         return false;
+    }
+
+    private void showCountryCodeList() {
+        final String[] countries = getResources().getStringArray(R.array.country_code);
+        AlertDialog.Builder listAlertDialog = new AlertDialog.Builder(getActivity());
+        listAlertDialog.setTitle(R.string.country_code);
+        DialogInterface.OnClickListener ListClick = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String[] countryCode = countries[which].split(",");
+                Application.countryCode = countryCode[countryCode.length - 1];
+            }
+        };
+        listAlertDialog.setItems(countries, ListClick);
+        listAlertDialog.show();
     }
 }

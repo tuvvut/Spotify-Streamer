@@ -21,7 +21,6 @@ import kaaes.spotify.webapi.android.models.Track;
 public class TracksPresenter extends Presenter implements AdapterView.OnItemClickListener {
     private String subtitle = "";
     private TracksListFragment fragment;
-    private boolean mIsLargeLayout;
 
     public TracksPresenter(TracksListFragment f) {
         super(f);
@@ -29,7 +28,6 @@ public class TracksPresenter extends Presenter implements AdapterView.OnItemClic
         subtitle = list.get(0).artists.get(0).name;
         fragment = f;
         fragment.setAdapterData(list);
-        mIsLargeLayout = getResources().getBoolean(R.bool.large_layout);
     }
 
     public String getSubtitle() {
@@ -45,7 +43,7 @@ public class TracksPresenter extends Presenter implements AdapterView.OnItemClic
         FragmentManager fragmentManager = fragment.getFragmentManager();
         StreamerFragment streamer = new StreamerFragment();
         streamer.setTracks(fragment.getAdapterData(), index);
-        if (!mIsLargeLayout) {
+        if (Application.isLargeLayout) {
             streamer.show(fragmentManager, StreamerFragment.TAG);
         } else {
             Util.replace(fragmentManager, R.id.container, streamer, StreamerFragment.TAG, Application.isOnePane);

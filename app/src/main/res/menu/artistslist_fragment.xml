@@ -7,4 +7,12 @@
         android:id="@+id/now_playing"
         android:title="@string/now_playing"
         app:showAsAction="always"/>
+    <item
+        android:id="@+id/country_code"
+        android:title="@string/country_code"
+        app:showAsAction="collapseActionView"/>
+    <item
+        android:id="@+id/toggle_notification"
+        android:title="@string/toggle_notification"
+        app:showAsAction="collapseActionView"/>
 </menu>

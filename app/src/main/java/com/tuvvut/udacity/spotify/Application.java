@@ -5,7 +5,9 @@ package com.tuvvut.udacity.spotify;
  */
 public class Application extends android.app.Application {
     public static boolean isOnePane = false;
-//    public static MusicController musicController;
+    public static boolean isLargeLayout = false;
+    public static String countryCode = "US";
+
     @Override
     public void onCreate() {
         super.onCreate();

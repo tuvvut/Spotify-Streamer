@@ -101,6 +101,7 @@ public class StreamerFragment extends DialogFragment implements MusicController.
         if (!musicController.isPreparing()) {
             setCurrentPosition();
             setDuration();
+            handler.postDelayed(update, 200);
             if (musicController.isPlaying()) {
                 play();
             }
@@ -257,8 +258,7 @@ public class StreamerFragment extends DialogFragment implements MusicController.
     public void cancel() {
         if (isFragmentVisible){
             handler.removeCallbacks(update);
-            boolean mIsLargeLayout = getResources().getBoolean(R.bool.large_layout);
-            if (!mIsLargeLayout) {
+            if (Application.isLargeLayout) {
                 this.dismiss();
             } else {
                 Util.popBackStack(getFragmentManager());

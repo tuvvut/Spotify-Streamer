@@ -32,12 +32,15 @@ import static com.tuvvut.udacity.spotify.MusicController.getInstance;
  * Created by wu on 2015/09/21
  */
 public class MusicService extends Service implements MusicController.MusicControlListener, AudioManager.OnAudioFocusChangeListener {
+    public final static String TOGGLE_NOTIFICATION = "TOGGLE_NOTIFICATION";
     private final int NOTIFICATION_ID = 1234;
     private MusicController musicController = getInstance();
     private Notification notification;
     private RemoteControlClient remoteControlClient;
     private AudioManager audioManager;
     private Toast toast;
+    private boolean showNotification = true;
+    private int playbackState = 0;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -90,16 +93,31 @@ public class MusicService extends Service implements MusicController.MusicContro
                 case CANCEL:
                     musicController.cancel();
                     break;
+                case TOGGLE_NOTIFICATION:
+                    toggleNotification();
+                    break;
             }
         }
         return super.onStartCommand(intent, flags, startId);
     }
 
     private void showNotification(Track track) {
-        updateRemoteView(notification.contentView, notification, track);
-        updateRemoteView(notification.bigContentView, notification, track);
-        UpdateRemoteControlClient(track);
-        startForeground(NOTIFICATION_ID, notification);
+        if (showNotification) {
+            UpdateRemoteControlClient(track);
+            updateRemoteView(notification.contentView, notification, track);
+            updateRemoteView(notification.bigContentView, notification, track);
+            startForeground(NOTIFICATION_ID, notification);
+        }
+    }
+
+    private void toggleNotification() {
+        showNotification = !showNotification;
+        if (showNotification) {
+            showNotification(musicController.getTrackForNow());
+        } else {
+            remoteControlClient.setPlaybackState(RemoteControlClient.PLAYSTATE_STOPPED);
+            stopForeground(true);
+        }
     }
 
     private void updateRemoteView(RemoteViews remoteView, Notification notification, Track track) {
@@ -119,6 +137,7 @@ public class MusicService extends Service implements MusicController.MusicContro
         if (remoteControlClient == null) {
             return;
         }
+        remoteControlClient.setPlaybackState(playbackState);
         RemoteControlClient.MetadataEditor metadataEditor = remoteControlClient.editMetadata(true);
         metadataEditor.putString(MediaMetadataRetriever.METADATA_KEY_ALBUM, track.album.name);
         metadataEditor.putString(MediaMetadataRetriever.METADATA_KEY_ARTIST, track.artists.get(0).name);
@@ -154,20 +173,20 @@ public class MusicService extends Service implements MusicController.MusicContro
 
     @Override
     public void play() {
+        playbackState = RemoteControlClient.PLAYSTATE_PLAYING;
         showNotification(musicController.getTrackForNow());
-        remoteControlClient.setPlaybackState(RemoteControlClient.PLAYSTATE_PLAYING);
     }
 
     @Override
     public void pause() {
+        playbackState = RemoteControlClient.PLAYSTATE_PAUSED;
         showNotification(musicController.getTrackForNow());
-        remoteControlClient.setPlaybackState(RemoteControlClient.PLAYSTATE_PAUSED);
     }
 
     @Override
     public void stop() {
+        playbackState = RemoteControlClient.PLAYSTATE_STOPPED;
         showNotification(musicController.getTrackForNow());
-        remoteControlClient.setPlaybackState(RemoteControlClient.PLAYSTATE_STOPPED);
     }
 
     @Override

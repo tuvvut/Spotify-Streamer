@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="country_code">
+        <item>Andorra,AD</item>
+        <item>Argentina,AR</item>
+        <item>Australia,AU</item>
+        <item>Austria,AT</item>
+        <item>Belgium,BE</item>
+        <item>Canada,CA</item>
+        <item>Ecuador,EC</item>
+        <item>El Salvador,SV</item>
+        <item>Finland,FI</item>
+        <item>France,FR</item>
+        <item>Hong Kong,HK</item>
+        <item>Italy,IT</item>
+        <item>Philippines,PH</item>
+        <item>Taiwan,TW</item>
+        <item>United States,US</item>
+    </string-array>
+</resources>
